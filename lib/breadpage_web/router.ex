@@ -1,4 +1,4 @@
-DEFmodule BreadpageWeb.Router do
+defmodule BreadpageWeb.Router do
   use BreadpageWeb, :router
 
   pipeline :browser do
