@@ -1,4 +1,4 @@
-defmodule BreadpageWeb.Router do
+DEFmodule BreadpageWeb.Router do
   use BreadpageWeb, :router
 
   pipeline :browser do
@@ -18,6 +18,15 @@ defmodule BreadpageWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+
+
+    live "/users", UserLive.Index, :index
+    live "/users/new", UserLive.Index, :new
+    live "/users/:id/edit", UserLive.Index, :edit
+
+    live "/users/:id", UserLive.Show, :show
+    live "/users/:id/show/edit", UserLive.Show, :edit
+
   end
 
   # Other scopes may use custom stacks.
