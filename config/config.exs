@@ -9,7 +9,8 @@ import Config
 
 config :breadpage,
   ecto_repos: [Breadpage.Repo],
-  generators: [timestamp_type: :utc_datetime]
+  generators: [timestamp_type: :utc_datetime],
+  migratation_primary_key: [type: :uuid]
 
 # Configures the endpoint
 config :breadpage, BreadpageWeb.Endpoint,
