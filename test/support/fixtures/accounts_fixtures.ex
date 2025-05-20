@@ -8,10 +8,22 @@ defmodule Breadpage.AccountsFixtures do
   def unique_user_name, do: "Mark #{System.unique_integer()}"
   def valid_user_password, do: "hello world!"
 
-  def valid_user_attributes(attrs \\ %{}) do
+  def valid_user_attributes(attrs \\ %{})
+
+  def valid_user_attributes(%{:password => password} = attrs) do
+    Enum.into(attrs, %{
+      email: unique_user_email(),
+      password: password,
+      password_confirmation: password,
+      name: unique_user_name()
+    })
+  end
+
+  def valid_user_attributes(attrs) do
     Enum.into(attrs, %{
       email: unique_user_email(),
       password: valid_user_password(),
+      password_confirmation: valid_user_password(),
       name: unique_user_name()
     })
   end
