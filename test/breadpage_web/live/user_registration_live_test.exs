@@ -34,6 +34,24 @@ defmodule BreadpageWeb.UserRegistrationLiveTest do
       assert result =~ "must have the @ sign and no spaces"
       assert result =~ "should be at least 12 character"
     end
+
+    test "renders errors for invalid password confirmation", %{conn: conn} do
+      {:ok, lv, _html} = live(conn, ~p"/users/register")
+
+      result =
+        lv
+        |> element("#registration_form")
+        |> render_change(
+          user: %{
+            "email" => unique_user_email(),
+            "password" => valid_user_password(),
+            "password_confirmation" => "different_password"
+          }
+        )
+
+      assert result =~ "Register"
+      assert result =~ "does not match password"
+    end
   end
 
   describe "register user" do
