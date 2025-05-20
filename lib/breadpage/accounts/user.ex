@@ -62,6 +62,7 @@ defmodule Breadpage.Accounts.User do
     # |> validate_format(:password, ~r/[!?@#$%^&*_0-9]/,
     #   message: "at least one digit or punctuation character"
     # )
+    |> validate_confirmation(:password, message: "does not match password")
     |> maybe_hash_password(opts)
   end
 
@@ -126,7 +127,6 @@ defmodule Breadpage.Accounts.User do
   def password_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, [:password])
-    |> validate_confirmation(:password, message: "does not match password")
     |> validate_password(opts)
   end
 
