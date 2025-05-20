@@ -60,6 +60,21 @@ defmodule Breadpage.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def list_users(), do: list_users([])
+
+  def list_users(criteria) when is_list(criteria) do
+    Repo.all(user_query(criteria))
+  end
+
+  def user_query(criteria) do
+    query = from(u in User)
+
+    Enum.reduce(criteria, query, fn
+      _, query ->
+        query
+    end)
+  end
+
   ## User registration
 
   @doc """
