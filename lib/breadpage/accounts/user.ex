@@ -2,6 +2,8 @@ defmodule Breadpage.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @primary_key {:id, :id, autogenerate: true}
+  @foreign_key_type :id
   schema "users" do
     field :email, :string
     field :name, :string
@@ -11,6 +13,9 @@ defmodule Breadpage.Accounts.User do
     field :confirmed_at, :utc_datetime
 
     timestamps(type: :utc_datetime)
+
+    has_many :post, Breadpage.Articles.Post
+    has_many :recipe, Breadpage.Articles.Recipe
   end
 
   @doc """
