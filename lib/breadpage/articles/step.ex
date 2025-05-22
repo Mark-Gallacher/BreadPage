@@ -16,8 +16,53 @@ defmodule Breadpage.Articles.Step do
     timestamps(type: :utc_datetime)
   end
 
-  defp changeset(recipe, attrs) do
-    recipe
-    |> cast(attrs, [:ingredient, :quantity, :time, :temperature, :type, :comment])
+  defp changeset(step, attrs) do
+    step
+    |> cast(attrs, [:step_number, :ingredient, :quantity, :time, :temperature, :type, :comment])
+    |> validate_step()
+    |> validate_ingredient()
+    |> validate_quantity()
+    |> validate_comment()
+    |> validate_temperature()
+    |> validate_type()
+  end
+
+
+  defp validate_step(changeset) do
+    changeset
+    |> validate_required(:step_number)
+    |> validate_number(:step_number, greater_than: 0)
+    |> validate_number(:step_number, less_than: 10000)
+  end
+
+  defp validate_ingredient(changeset) do
+    changeset
+    |> validate_length(:ingredient, max: 100)
+
+  end
+
+  defp validate_quantity(changeset) do
+    changeset
+    |> validate_number(:quantity, greater_than: 0)
+    |> validate_number(:quantity, less_than: 10000)
+  end
+
+  defp validate_comment(changeset) do
+    changeset
+    |> validate_length(:comment, max: 500)
+
+  end
+
+  defp validate_type(changeset) do
+    changeset
+    |> validate_length(:type, max: 500)
+
+  end
+
+  defp validate_temperature(changeset) do
+    changeset
+    |> validate_number(:temperature, less_than: 1000)
+    |> validate_number(:temperature, greater_than: 100)
+
   end
 end
