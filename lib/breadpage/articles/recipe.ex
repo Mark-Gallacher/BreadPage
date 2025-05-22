@@ -20,5 +20,25 @@ defmodule Breadpage.Articles.Recipe do
   defp changeset(recipe, attrs) do
     recipe
     |> cast(attrs, [:hydration, :total_time, :source, :user_id, :steps_id])
+    |> validate_required([:source])
+    |> validate_hydration()
+    |> validate_source()
+  end
+
+  defp validate_hydration(changeset) do
+
+    changeset
+    |> validate_number(:hydration, :great_than_or_equal, 0)
+    |> validate_number(:hydration, :less_than, 2)
+
+  end
+
+  defp validate_source(changeset) do
+
+    changeset
+    |> validate_length(:source, max: 500)
+    |> validate_length(:source, min: 2)
+
+
   end
 end
