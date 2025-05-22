@@ -31,7 +31,7 @@ defmodule Breadpage.Articles.Step do
   defp validate_step(changeset) do
     changeset
     |> validate_required(:step_number)
-    |> validate_number(:step_number, greater_than: 0)
+    |> validate_number(:step_number, greater_than_or_equal: 0)
     |> validate_number(:step_number, less_than: 10000)
   end
 
@@ -43,7 +43,7 @@ defmodule Breadpage.Articles.Step do
 
   defp validate_quantity(changeset) do
     changeset
-    |> validate_number(:quantity, greater_than: 0)
+    |> validate_number(:quantity, greater_than_or_equal: 0)
     |> validate_number(:quantity, less_than: 10000)
   end
 
@@ -62,7 +62,7 @@ defmodule Breadpage.Articles.Step do
   defp validate_temperature(changeset) do
     changeset
     |> validate_number(:temperature, less_than: 1000)
-    |> validate_number(:temperature, greater_than: 100)
+    |> validate_number(:temperature, greater_than: -100)
 
   end
 end
