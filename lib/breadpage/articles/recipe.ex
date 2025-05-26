@@ -26,19 +26,14 @@ defmodule Breadpage.Articles.Recipe do
   end
 
   defp validate_hydration(changeset) do
-
     changeset
-    |> validate_number(:hydration, :great_than_or_equal, 0)
-    |> validate_number(:hydration, :less_than, 2)
-
+    |> validate_number(:hydration, great_than_or_equal: 0)
+    |> validate_number(:hydration, less_than: 2)
   end
 
   defp validate_source(changeset) do
-
     changeset
     |> validate_length(:source, max: 500)
     |> validate_length(:source, min: 2)
-
-
   end
 end
