@@ -10,7 +10,8 @@ import Config
 config :breadpage,
   ecto_repos: [Breadpage.Repo],
   generators: [timestamp_type: :utc_datetime],
-  migratation_primary_key: [type: :uuid]
+  migratation_primary_key: [type: :uuid],
+  types: Breadpage.PostgrexTypes
 
 # Configures the endpoint
 config :breadpage, BreadpageWeb.Endpoint,
