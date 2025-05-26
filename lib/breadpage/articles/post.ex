@@ -14,7 +14,7 @@ defmodule Breadpage.Articles.Post do
     belongs_to :recipe, Breadpage.Articles.Recipe
   end
 
-  defp changeset(post, attrs) do
+  def changeset(post, attrs) do
     post
     |> cast(attrs, [:title, :description, :tags, :user_id, :recipe_id])
     |> validate_required([:title, :user_id, :recipe_id])

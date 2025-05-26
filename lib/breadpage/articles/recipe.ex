@@ -17,7 +17,7 @@ defmodule Breadpage.Articles.Recipe do
     has_one :post, Breadpage.Articles.Post
   end
 
-  defp changeset(recipe, attrs) do
+  def changeset(recipe, attrs) do
     recipe
     |> cast(attrs, [:hydration, :total_time, :source, :user_id, :steps_id])
     |> validate_required([:source])
@@ -27,7 +27,7 @@ defmodule Breadpage.Articles.Recipe do
 
   defp validate_hydration(changeset) do
     changeset
-    |> validate_number(:hydration, great_than_or_equal: 0)
+    |> validate_number(:hydration, greater_than_or_equal_to: 0)
     |> validate_number(:hydration, less_than: 2)
   end
 
