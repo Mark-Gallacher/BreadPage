@@ -18,7 +18,18 @@ defmodule Breadpage.Articles.Post do
     post
     |> cast(attrs, [:title, :description, :tags, :user_id, :recipe_id])
     |> validate_required([:title, :user_id, :recipe_id])
+    |> validate_title()
+    |> validate_description()
+    |> validate_length(:description, max: 500)
+  end
+
+  defp validate_title(changeset) do
+    changeset
     |> validate_length(:title, min: 8, max: 120)
+  end
+
+  defp validate_description(changeset) do
+    changeset
     |> validate_length(:description, max: 500)
   end
 end
