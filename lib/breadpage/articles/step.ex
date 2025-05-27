@@ -36,6 +36,7 @@ defmodule Breadpage.Articles.Step do
     |> validate_temperature()
     |> validate_type()
     |> validate_unit()
+    |> validate_time(:time)
   end
 
   defp validate_step(changeset) do
