@@ -19,7 +19,7 @@ defmodule Breadpage.Articles.Recipe do
 
   def changeset(recipe, attrs) do
     recipe
-    |> cast(attrs, [:hydration, :prep_time, :bake_time, :source, :user_id, :step_id])
+    |> cast(attrs, [:hydration, :prep_time, :bake_time, :source])
     |> validate_required([:hydration, :prep_time, :bake_time, :source])
     |> validate_hydration()
     |> validate_source()
@@ -30,6 +30,10 @@ defmodule Breadpage.Articles.Recipe do
     changeset
     |> validate_number(:hydration, greater_than_or_equal_to: 0)
     |> validate_number(:hydration, less_than: 2)
+    |> check_constraint(:hydration,
+      name: :hydration_always_positive,
+      message: "Hydration should always be positive"
+    )
   end
 
   defp validate_source(changeset) do
@@ -47,10 +51,7 @@ defmodule Breadpage.Articles.Recipe do
 
   defp validate_interval(changeset, field) when is_atom(field) do
     changeset
-    |> dbg()
     |> validate_change(field, fn field, value ->
-      IO.inspect(value)
-
       case is_interval_valid?(value) do
         false ->
           [{field, "Cannot be negative"}]
@@ -59,6 +60,11 @@ defmodule Breadpage.Articles.Recipe do
           []
       end
     end)
+    |> check_constraint(field,
+      name: field,
+      match: :prefix,
+      message: "Durations should always be positive"
+    )
   end
 
   defp is_interval_valid?(map) do
@@ -68,6 +74,5 @@ defmodule Breadpage.Articles.Recipe do
     |> Enum.all?(fn {_key, value} ->
       value >= 0
     end)
-    |> dbg()
   end
 end
