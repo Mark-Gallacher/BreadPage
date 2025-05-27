@@ -21,7 +21,7 @@ defmodule Breadpage.ArticlesTest do
     end
 
     test "create_step/2 with valid missing data" do
-      valid_step = %{step_number: 1}
+      valid_step = %{step_number: 1, time: Duration.new!(hour: 1)}
       assert {:ok, %Step{} = step} = Articles.create_step(valid_step)
 
       assert step.step_number == 1
@@ -31,7 +31,19 @@ defmodule Breadpage.ArticlesTest do
       assert step.temperature == nil
       assert step.type == nil
       assert step.comment == nil
-      assert step.time == nil
+      assert step.time == Duration.new!(hour: 1)
+    end
+
+    test "create_step/2 with too many missing fields" do
+      invalid_step = %{step_number: 1}
+
+      assert {:error, %Ecto.Changeset{} = changeset} =
+               Articles.create_step(invalid_step)
+
+      assert changeset.valid? == false
+
+      assert %{ingredient: ["step should contain an ingredient, time or temperature"]} =
+               errors_on(changeset)
     end
 
     test "create_step/2 with invalid step_number" do
@@ -52,7 +64,7 @@ defmodule Breadpage.ArticlesTest do
 
       assert changeset.valid? == false
 
-      assert %{ingredient: ["Cannot specify an ingredient without also specifying a quantity"]} =
+      assert %{ingredient: ["cannot specify an ingredient without also specifying a quantity"]} =
                errors_on(changeset)
     end
 
@@ -64,7 +76,7 @@ defmodule Breadpage.ArticlesTest do
 
       assert changeset.valid? == false
 
-      assert %{unit: ["Cannot specify a quantity without also specifying a unit"]} =
+      assert %{unit: ["cannot specify a quantity without also specifying a unit"]} =
                errors_on(changeset)
     end
 
@@ -101,7 +113,7 @@ defmodule Breadpage.ArticlesTest do
 
       assert changeset.valid? == false
 
-      assert %{time: ["Cannot be negative"]} =
+      assert %{time: ["cannot be negative"]} =
                errors_on(changeset)
     end
   end
