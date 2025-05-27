@@ -14,6 +14,8 @@ defmodule Breadpage.Articles.Step do
     field :type, :string
     field :comment, :string
 
+    has_one :recipe, Breadpage.Articles.Recipe
+
     timestamps(type: :utc_datetime)
   end
 
@@ -96,10 +98,7 @@ defmodule Breadpage.Articles.Step do
 
   defp validate_time(changeset, field) when is_atom(field) do
     changeset
-    |> dbg()
     |> validate_change(field, fn field, value ->
-      IO.inspect(value)
-
       case is_interval_valid?(value) do
         false ->
           [{field, "Cannot be negative"}]
@@ -117,6 +116,5 @@ defmodule Breadpage.Articles.Step do
     |> Enum.all?(fn {_key, value} ->
       value >= 0
     end)
-    |> dbg()
   end
 end
