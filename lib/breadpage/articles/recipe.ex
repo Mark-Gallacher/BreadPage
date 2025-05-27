@@ -19,8 +19,8 @@ defmodule Breadpage.Articles.Recipe do
 
   def changeset(recipe, attrs) do
     recipe
-    |> cast(attrs, [:hydration, :prep_time, :bake_time, :source])
-    |> validate_required([:hydration, :prep_time, :bake_time, :source])
+    |> cast(attrs, [:hydration, :prep_time, :bake_time, :source, :user_id, :step_id])
+    |> validate_required([:hydration, :prep_time, :bake_time, :source, :user_id, :step_id])
     |> validate_hydration()
     |> validate_source()
     |> validate_interval([:prep_time, :bake_time])
