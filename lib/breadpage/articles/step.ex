@@ -59,7 +59,6 @@ defmodule Breadpage.Articles.Step do
     changeset
     |> validate_number(:quantity, greater_than_or_equal_to: 0)
     |> validate_number(:quantity, less_than: 10000)
-
     |> check_constraint(:quantity,
       name: :if_quantity_then_quatity_is_positive,
       message: "Quantity cannot be a negative number"
@@ -73,7 +72,7 @@ defmodule Breadpage.Articles.Step do
 
   defp validate_unit(changeset) do
     changeset
-    |> validate_length(:unit, max: 500)    
+    |> validate_length(:unit, max: 100)
     |> check_constraint(:unit,
       name: :if_quantity_then_unit_not_null,
       message: "Cannot specify a quantity without also specifying a unit"
