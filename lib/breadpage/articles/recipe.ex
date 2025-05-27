@@ -36,4 +36,37 @@ defmodule Breadpage.Articles.Recipe do
     |> validate_length(:source, max: 500)
     |> validate_length(:source, min: 2)
   end
+
+  defp validate_interval(changeset, field) when is_list(field) do
+    Enum.reduce(field, changeset, fn field, changeset ->
+      changeset
+      |> validate_interval(field)
+    end)
+  end
+
+  defp validate_interval(changeset, field) when is_atom(field) do
+    changeset
+    |> dbg()
+    |> validate_change(field, fn field, value ->
+      IO.inspect(value)
+
+      case is_interval_valid?(value) do
+        false ->
+          [{field, "cannot be negative"}]
+
+        true ->
+          []
+      end
+    end)
+  end
+
+  defp is_interval_valid?(map) do
+    map
+    |> Map.from_struct()
+    |> Map.delete(:microsecond)
+    |> Enum.all?(fn {_key, value} ->
+      value >= 0
+    end)
+    |> dbg()
+  end
 end
