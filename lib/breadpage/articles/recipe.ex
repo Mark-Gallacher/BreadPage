@@ -23,6 +23,7 @@ defmodule Breadpage.Articles.Recipe do
     |> validate_required([:hydration, :prep_time, :bake_time, :source])
     |> validate_hydration()
     |> validate_source()
+    |> validate_interval([:prep_time, :bake_time])
   end
 
   defp validate_hydration(changeset) do
