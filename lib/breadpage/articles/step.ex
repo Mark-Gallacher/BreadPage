@@ -93,4 +93,30 @@ defmodule Breadpage.Articles.Step do
       message: "Temperature cannot be a negative number"
     )
   end
+
+  defp validate_time(changeset, field) when is_atom(field) do
+    changeset
+    |> dbg()
+    |> validate_change(field, fn field, value ->
+      IO.inspect(value)
+
+      case is_interval_valid?(value) do
+        false ->
+          [{field, "Cannot be negative"}]
+
+        true ->
+          []
+      end
+    end)
+  end
+
+  defp is_interval_valid?(map) do
+    map
+    |> Map.from_struct()
+    |> Map.delete(:microsecond)
+    |> Enum.all?(fn {_key, value} ->
+      value >= 0
+    end)
+    |> dbg()
+  end
 end

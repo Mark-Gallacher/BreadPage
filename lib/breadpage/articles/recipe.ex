@@ -53,7 +53,7 @@ defmodule Breadpage.Articles.Recipe do
 
       case is_interval_valid?(value) do
         false ->
-          [{field, "cannot be negative"}]
+          [{field, "Cannot be negative"}]
 
         true ->
           []
