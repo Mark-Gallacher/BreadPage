@@ -39,6 +39,10 @@ defmodule Breadpage.Articles.Step do
     |> validate_type()
     |> validate_unit()
     |> validate_time(:time)
+    |> check_constraint(:ingredient,
+      name: :ensure_one_attribute_is_not_null,
+      message: "step should contain an ingredient, time or temperature"
+    )
   end
 
   defp validate_step(changeset) do
@@ -53,7 +57,7 @@ defmodule Breadpage.Articles.Step do
     |> validate_length(:ingredient, max: 100)
     |> check_constraint(:ingredient,
       name: :if_ingredient_then_quantity_not_null,
-      message: "Cannot specify an ingredient without also specifying a quantity"
+      message: "cannot specify an ingredient without also specifying a quantity"
     )
   end
 
@@ -63,7 +67,7 @@ defmodule Breadpage.Articles.Step do
     |> validate_number(:quantity, less_than: 10000)
     |> check_constraint(:quantity,
       name: :if_quantity_then_quatity_is_positive,
-      message: "Quantity cannot be a negative number"
+      message: "quantity cannot be a negative number"
     )
   end
 
@@ -77,7 +81,7 @@ defmodule Breadpage.Articles.Step do
     |> validate_length(:unit, max: 100)
     |> check_constraint(:unit,
       name: :if_quantity_then_unit_not_null,
-      message: "Cannot specify a quantity without also specifying a unit"
+      message: "cannot specify a quantity without also specifying a unit"
     )
   end
 
@@ -92,7 +96,7 @@ defmodule Breadpage.Articles.Step do
     |> validate_number(:temperature, greater_than: 0)
     |> check_constraint(:temperature,
       name: :if_temperature_then_temperature_is_positive,
-      message: "Temperature cannot be a negative number"
+      message: "temperature cannot be a negative number"
     )
   end
 
@@ -101,7 +105,7 @@ defmodule Breadpage.Articles.Step do
     |> validate_change(field, fn field, value ->
       case is_interval_valid?(value) do
         false ->
-          [{field, "Cannot be negative"}]
+          [{field, "cannot be negative"}]
 
         true ->
           []
